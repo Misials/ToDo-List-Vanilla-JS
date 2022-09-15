@@ -23,7 +23,33 @@
 
 <body>
 
-  <h1>Hello!</h1>
+  <div class="container">
+    <header class="header">
+      <h1 class="header__title">Write It Down</h1>
+      <div class="header__inputBox">
+        <input type="text" class="header__input" placeholder="Do shopping..">
+        <button class="header__btn">Add Task</button>
+      </div>
+    </header>
+
+    <main class="tasks">
+      <div class="task">
+        <div class="task__valueBox">
+          <i class="far fa-circle task__undoneIcon"></i>
+          <i class="fas fa-circle task__doneIcon"></i>
+          <p class="task__value">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse, voluptatum!</p>
+        </div>
+        <div class="task__buttons">
+          <button class="task__btn task__editBtn">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="task__btn task__deleteBtn">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
 
 </body>
 
