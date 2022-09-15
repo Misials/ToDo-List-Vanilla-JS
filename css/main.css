@@ -80,7 +80,7 @@ body {
 }
 
 .tasks {
-	padding: 2rem;
+	padding: 2rem 0;
 	display: flex;
 	flex-direction: column;
 	gap: 1.6rem;
@@ -131,4 +131,22 @@ body {
 
 .task__btn:hover {
 	background-color: #ccc;
+}
+
+@media (max-width: 38em) {
+	.task {
+		flex-direction: column;
+		gap: 1.6rem;
+	}
+
+	.task__buttons {
+		margin-left: 0;
+    gap: 2rem;
+	}
+}
+
+@media (max-width: 29em) {
+  .header__inputBox {
+    flex-direction: column;
+  }
 }
