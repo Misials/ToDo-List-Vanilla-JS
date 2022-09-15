@@ -79,6 +79,13 @@ body {
 	background-color: #ccc;
 }
 
+.header__error {
+	display: none;
+	color: red;
+	font-weight: bold;
+	margin-top: 1.6rem;
+}
+
 .tasks {
 	padding: 2rem 0;
 	display: flex;
@@ -103,8 +110,12 @@ body {
 	gap: 1rem;
 }
 
-.task__doneIcon {
+.task__id {
 	display: none;
+}
+
+.task__value.task__done {
+	text-decoration: line-through;
 }
 
 .task__doneIcon,
@@ -141,12 +152,12 @@ body {
 
 	.task__buttons {
 		margin-left: 0;
-    gap: 2rem;
+		gap: 2rem;
 	}
 }
 
 @media (max-width: 29em) {
-  .header__inputBox {
-    flex-direction: column;
-  }
+	.header__inputBox {
+		flex-direction: column;
+	}
 }
