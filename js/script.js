@@ -9,8 +9,8 @@ const doneIcon = document.querySelector('.task__doneIcon');
 const editTaskBtn = document.querySelector('.task__editBtn');
 const deleteTaskBtn = document.querySelector('.task__deleteBtn');
 
-let id = 0;
-let tasks = [];
+let id;
+let tasks;
 
 const clearInput = function () {
 	newTaskInput.value = '';
@@ -34,35 +34,38 @@ const saveTask = function () {
 	id++;
 	tasks.push(newTask);
 	clearInput();
+	saveIntoLocalStorage();
 	renderTasks();
 };
 
 const renderTasks = function () {
-	tasksContainer.innerHTML = '';
-	tasks.forEach(task => {
-		const html = `
-      <div class="task">
-        <div class="task__valueBox">
-          <p class="task__id">${task.id}</p>
-          ${
-						task.isDone
-							? '<i class="fas fa-circle task__doneIcon"></i>'
-							: '<i class="far fa-circle task__undoneIcon"></i>'
-					}
-          <p class="task__value ${task.isDone ? 'task__done' : ''}">${task.taskValue}</p>
-        </div>
-        <div class="task__buttons">
-          <button class="task__btn task__editBtn">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="task__btn task__deleteBtn">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </div>
-      </div>
-    `;
-		tasksContainer.insertAdjacentHTML('beforeend', html);
-	});
+	let html;
+	if (tasks.length > 0) {
+		tasksContainer.innerHTML = '';
+		tasks.forEach(task => {
+			html = `
+				<div class="task">
+					<div class="task__valueBox">
+						<p class="task__id">${task.id}</p>
+						${task.isDone ? '<i class="fas fa-circle task__doneIcon"></i>' : '<i class="far fa-circle task__undoneIcon"></i>'}
+						<p class="task__value ${task.isDone ? 'task__done' : ''}">${task.taskValue}</p>
+					</div>
+					<div class="task__buttons">
+						<button class="task__btn task__editBtn">
+							<i class="fas fa-edit"></i>
+						</button>
+						<button class="task__btn task__deleteBtn">
+							<i class="fas fa-trash-alt"></i>
+						</button>
+					</div>
+				</div>
+			`;
+			tasksContainer.insertAdjacentHTML('beforeend', html);
+		});
+	} else {
+		html = `<p class="task__info">You don't have any tasks yet</p>`;
+		tasksContainer.insertAdjacentHTML('afterbegin', html);
+	}
 };
 
 const switchTask = function (task) {
@@ -73,10 +76,32 @@ const switchTask = function (task) {
 	}
 };
 
+const saveIntoLocalStorage = function () {
+	localStorage.setItem('id', JSON.stringify(id));
+	localStorage.setItem('tasks', JSON.stringify(tasks));
+};
+
+const getFromLocalStorage = function () {
+	id = JSON.parse(localStorage.getItem('id')) || 0;
+	tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+};
+
+const init = function () {
+	getFromLocalStorage();
+	renderTasks();
+};
+
+document.addEventListener('DOMContentLoaded', init);
+
 addNewTaskBtn.addEventListener('click', saveTask);
 tasksContainer.addEventListener('click', function (e) {
+	if (e.target.closest('.task__buttons')) {
+		return;
+	}
+
 	const taskId = e.target.closest('.task').querySelector('.task__id').textContent;
 	const task = tasks.find(task => task.id === +taskId);
 	switchTask(task);
+	saveIntoLocalStorage();
 	renderTasks();
 });
