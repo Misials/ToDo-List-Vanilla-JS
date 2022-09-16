@@ -6,8 +6,6 @@ const headerError = document.querySelector('.header__error');
 const tasksContainer = document.querySelector('.tasks');
 const undoneIcon = document.querySelector('.task__undoneIcon');
 const doneIcon = document.querySelector('.task__doneIcon');
-const editTaskBtn = document.querySelector('.task__editBtn');
-const deleteTaskBtn = document.querySelector('.task__deleteBtn');
 
 let id;
 let tasks;
@@ -38,10 +36,17 @@ const saveTask = function () {
 	renderTasks();
 };
 
+const deleteTask = function (taskId) {
+	const taskIndex = tasks.findIndex(element => element.id === taskId);
+	tasks.splice(taskIndex, 1);
+	saveIntoLocalStorage();
+};
+
 const renderTasks = function () {
+	getFromLocalStorage();
 	let html;
+	tasksContainer.innerHTML = '';
 	if (tasks.length > 0) {
-		tasksContainer.innerHTML = '';
 		tasks.forEach(task => {
 			html = `
 				<div class="task">
@@ -87,13 +92,21 @@ const getFromLocalStorage = function () {
 };
 
 const init = function () {
-	getFromLocalStorage();
 	renderTasks();
 };
 
 document.addEventListener('DOMContentLoaded', init);
 
 addNewTaskBtn.addEventListener('click', saveTask);
+
+tasksContainer.addEventListener('click', function (e) {
+	const taskId = e.target.closest('.task').querySelector('.task__id').textContent;
+	if (e.target.closest('.task__deleteBtn')) {
+		deleteTask(+taskId);
+		renderTasks();
+	}
+});
+
 tasksContainer.addEventListener('click', function (e) {
 	if (e.target.closest('.task__buttons')) {
 		return;
