@@ -181,6 +181,14 @@ body {
 	color: var(--dark-grey);
 }
 
+.modal__closeBtn {
+	margin-top: 2rem;
+}
+
+.display-block {
+	display: block;
+}
+
 @media (max-width: 50em) {
 	.modal__inputBox {
 		flex-direction: column;

@@ -6,9 +6,16 @@ const headerError = document.querySelector('.header__error');
 const tasksContainer = document.querySelector('.tasks');
 const undoneIcon = document.querySelector('.task__undoneIcon');
 const doneIcon = document.querySelector('.task__doneIcon');
+const modalShadow = document.querySelector('.modal-shadow');
+const modal = document.querySelector('.modal');
+const modalInput = document.querySelector('.modal__input');
+const modalEditTaskBtn = document.querySelector('.modal__editTaskBtn');
+const modalError = document.querySelector('.modal__error');
+const modalCloseBtn = document.querySelector('.modal__closeBtn');
 
 let id;
 let tasks;
+let editTaskId;
 
 const clearInput = function () {
 	newTaskInput.value = '';
@@ -77,6 +84,37 @@ const renderTasks = function () {
 	}
 };
 
+const openModal = function (taskId) {
+	const task = tasks.find(task => task.id === taskId);
+	modalInput.value = task.taskValue;
+	modalError.textContent = '';
+	modal.classList.add('display-block');
+	modalShadow.classList.add('display-block');
+};
+
+const closeModal = function () {
+	modalInput.value = '';
+	modalError.textContent = '';
+	modal.classList.remove('display-block');
+	modalShadow.classList.remove('display-block');
+};
+
+const editTask = function (taskId) {
+	const task = tasks.find(task => task.id === taskId);
+	const newValue = modalInput.value;
+
+	if (!newValue) {
+		modalError.textContent = 'Task cannot be empty!';
+		modalError.style.display = 'block';
+		return;
+	}
+
+	task.taskValue = newValue;
+	saveIntoLocalStorage();
+	renderTasks();
+	closeModal();
+};
+
 const switchTask = function (task) {
 	if (task.isDone === true) {
 		task.isDone = false;
@@ -99,9 +137,12 @@ const init = function () {
 	renderTasks();
 };
 
+// Event Listeners
+
 document.addEventListener('DOMContentLoaded', init);
 
 addNewTaskBtn.addEventListener('click', saveTask);
+
 newTaskInput.addEventListener('keydown', function (e) {
 	if (e.key === 'Enter') {
 		saveTask();
@@ -113,6 +154,10 @@ tasksContainer.addEventListener('click', function (e) {
 	if (e.target.closest('.task__deleteBtn')) {
 		deleteTask(+taskId);
 		renderTasks();
+	}
+	if (e.target.closest('.task__editBtn')) {
+		editTaskId = +taskId;
+		openModal(editTaskId);
 	}
 });
 
@@ -126,4 +171,18 @@ tasksContainer.addEventListener('click', function (e) {
 	switchTask(task);
 	saveIntoLocalStorage();
 	renderTasks();
+});
+
+modalCloseBtn.addEventListener('click', closeModal);
+
+document.addEventListener('keydown', function (e) {
+	if (e.key === 'Escape') {
+		closeModal();
+	}
+});
+
+modalShadow.addEventListener('click', closeModal);
+
+modalEditTaskBtn.addEventListener('click', function () {
+	editTask(editTaskId);
 });
