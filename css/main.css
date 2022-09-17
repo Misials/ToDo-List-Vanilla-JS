@@ -1,5 +1,6 @@
 :root {
 	--dark-grey: #333;
+	--lighter-grey: #ccc;
 	--light-grey: #ddd;
 	--white: #fff;
 	--black: #000;
@@ -25,6 +26,7 @@ body {
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
+	position: relative;
 }
 
 .container {
@@ -44,19 +46,22 @@ body {
 	border-bottom: 1px solid var(--dark-grey);
 }
 
-.header__title {
+.header__title,
+.modal__title {
 	font-size: 4rem;
 	margin-bottom: 1.6rem;
 }
 
-.header__inputBox {
+.header__inputBox,
+.modal__inputBox {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	gap: 1rem;
 }
 
-.header__input {
+.header__input,
+.modal__input {
 	font-family: inherit;
 	font-size: 1.8rem;
 	padding: 0.8rem 1.6rem;
@@ -64,7 +69,8 @@ body {
 	border: 1px solid var(--dark-grey);
 }
 
-.header__btn {
+.header__btn,
+.modal__btn {
 	font-family: inherit;
 	font-size: 1.6rem;
 	font-weight: bold;
@@ -75,11 +81,13 @@ body {
 	transition: background-color 0.3s;
 }
 
-.header__btn:hover {
-	background-color: #ccc;
+.header__btn:hover,
+.modal__btn:hover {
+	background-color: var(--lighter-grey);
 }
 
-.header__error {
+.header__error,
+.modal__error {
 	display: none;
 	color: red;
 	font-weight: bold;
@@ -137,7 +145,7 @@ body {
 .task__btn {
 	font-size: 1.6rem;
 	padding: 1rem;
-	background: #fff;
+	background: var(--white);
 	border: none;
 	color: var(--dark-grey);
 	border-radius: 1rem;
@@ -146,10 +154,40 @@ body {
 }
 
 .task__btn:hover {
-	background-color: #ccc;
+	background-color: var(--lighter-grey);
 }
 
-@media (max-width: 38em) {
+.modal-shadow {
+	display: none;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: var(--white);
+	padding: 2.4rem;
+	border-radius: 1rem;
+	text-align: center;
+}
+
+.modal__title {
+	color: var(--dark-grey);
+}
+
+@media (max-width: 50em) {
+	.modal__inputBox {
+		flex-direction: column;
+	}
+}
+
+@media (max-width: 40em) {
 	.task {
 		flex-direction: column;
 		gap: 1.6rem;
@@ -159,10 +197,20 @@ body {
 		margin-left: 0;
 		gap: 2rem;
 	}
+
+	.modal__title {
+		font-size: 3.2rem;
+	}
 }
 
 @media (max-width: 29em) {
 	.header__inputBox {
 		flex-direction: column;
+	}
+}
+
+@media (max-width: 22em) {
+	.header__title {
+		font-size: 3.2rem;
 	}
 }

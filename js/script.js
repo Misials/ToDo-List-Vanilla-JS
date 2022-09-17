@@ -16,6 +16,10 @@ const clearInput = function () {
 	headerError.textContent = '';
 };
 
+const makeStringCapitalize = function (string) {
+	return string[0].toUpperCase() + string.slice(1);
+};
+
 const saveTask = function () {
 	if (!newTaskInput.value) {
 		headerError.textContent = 'Task cannot be empty!';
@@ -53,7 +57,7 @@ const renderTasks = function () {
 					<div class="task__valueBox">
 						<p class="task__id">${task.id}</p>
 						${task.isDone ? '<i class="fas fa-circle task__doneIcon"></i>' : '<i class="far fa-circle task__undoneIcon"></i>'}
-						<p class="task__value ${task.isDone ? 'task__done' : ''}">${task.taskValue}</p>
+						<p class="task__value ${task.isDone ? 'task__done' : ''}">${makeStringCapitalize(task.taskValue)}</p>
 					</div>
 					<div class="task__buttons">
 						<button class="task__btn task__editBtn">
@@ -98,6 +102,11 @@ const init = function () {
 document.addEventListener('DOMContentLoaded', init);
 
 addNewTaskBtn.addEventListener('click', saveTask);
+newTaskInput.addEventListener('keydown', function (e) {
+	if (e.key === 'Enter') {
+		saveTask();
+	}
+});
 
 tasksContainer.addEventListener('click', function (e) {
 	const taskId = e.target.closest('.task').querySelector('.task__id').textContent;
